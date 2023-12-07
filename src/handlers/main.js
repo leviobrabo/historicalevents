@@ -1779,32 +1779,39 @@ const tardJob = new CronJob(
 );
 tardJob.start();
 
-function updateExistingChatsToNewSchema() {
+function updateExistingUsersToNewSchema() {
     try {
-      const result = ChatModel.updateMany(
+      const result = UserModel.updateMany(
         {},
         {
           $rename: {
-            'chatId': 'chat_id',
-            'chatName': 'chat_name',
-            'isBlocked': 'blocked'
+            'firstname': 'first_name',
+            'lastname': 'last_name',
+            'is_dev': 'sudo'
+          },
+          $unset: {
+            'createdAt': '',
+            'updatedAt': ''
           },
           $set: {
-            'question': '' // Adicione um valor padrão para o campo question, se necessário
+            'message_id': '',
+            'hits': 0,
+            'questions': 0,
+            'progress': 0
           }
         },
         { multi: true }
       );
   
-      console.log('Documentos de chat atualizados com sucesso:', result);
+      console.log('Documentos atualizados com sucesso:', result);
     } catch (error) {
-      console.error('Erro ao atualizar os documentos de chat:', error);
+      console.error('Erro ao atualizar os documentos:', error);
     }
   }
   
-  // Chamada da função para atualizar os documentos de chat
-  updateExistingChatsToNewSchema();
-  
+  // Chamada da função para atualizar os documentos
+  updateExistingUsersToNewSchema();
+
 function sendBotOnlineMessage() {
     console.log(`Historical Events started successfully...`);
     bot.sendMessage(groupId, `#HistoricalEvents #ONLINE\n\nBot is now playing ...`);
