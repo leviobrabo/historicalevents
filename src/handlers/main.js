@@ -1780,37 +1780,37 @@ const tardJob = new CronJob(
 tardJob.start();
 
 function updateExistingUsersToNewSchema() {
-    try {
-      const result = UserModel.updateMany(
+    UserModel.updateMany(
         {},
         {
-          $rename: {
-            'firstname': 'first_name',
-            'lastname': 'last_name',
-            'is_dev': 'sudo'
-          },
-          $unset: {
-            'createdAt': '',
-            'updatedAt': ''
-          },
-          $set: {
-            'message_id': '',
-            'hits': 0,
-            'questions': 0,
-            'progress': 0
-          }
+            $rename: {
+                'firstname': 'first_name',
+                'lastname': 'last_name',
+                'is_dev': 'sudo'
+            },
+            $unset: {
+                'createdAt': '',
+                'updatedAt': ''
+            },
+            $set: {
+                'message_id': '',
+                'hits': 0,
+                'questions': 0,
+                'progress': 0
+            }
         },
         { multi: true }
-      );
-  
-      console.log('Documentos atualizados com sucesso:', result);
-    } catch (error) {
-      console.error('Erro ao atualizar os documentos:', error);
-    }
-  }
-  
-  // Chamada da função para atualizar os documentos
-  updateExistingUsersToNewSchema();
+    )
+        .then(result => {
+            console.log('Documentos atualizados com sucesso:', result);
+        })
+        .catch(error => {
+            console.error('Erro ao atualizar os documentos:', error);
+        });
+}
+
+// Chamada da função para atualizar os documentos
+updateExistingUsersToNewSchema();
 
 function sendBotOnlineMessage() {
     console.log(`Historical Events started successfully...`);
