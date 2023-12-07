@@ -1812,6 +1812,32 @@ tardJob.start();
 // Chamada da função para atualizar os documentos
 // updateExistingUsersToNewSchema();
 
+function updateExistingChatsToNewSchema() {
+    try {
+        const result = ChatModel.updateMany(
+            {},
+            {
+                $rename: {
+                    'chatId': 'chat_id',
+                    'chatName': 'chat_name',
+                    'isBlocked': 'blocked'
+                },
+                $set: {
+                    'question': '' // Adicione um valor padrão para o campo question, se necessário
+                }
+            },
+            { multi: true }
+        );
+
+        console.log('Documentos de chat atualizados com sucesso:', result);
+    } catch (error) {
+        console.error('Erro ao atualizar os documentos de chat:', error);
+    }
+}
+
+// Chamada da função para atualizar os documentos de chat
+updateExistingChatsToNewSchema();
+
 function sendBotOnlineMessage() {
     console.log(`Historical Events started successfully...`);
     bot.sendMessage(groupId, `#HistoricalEvents #ONLINE\n\nBot is now playing ...`);
