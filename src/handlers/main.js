@@ -1779,31 +1779,9 @@ const tardJob = new CronJob(
 );
 tardJob.start();
 
-
-function sendBotOnlineMessage() {
-    console.log(`Historical Events started successfully...`);
-    bot.sendMessage(groupId, `#HistoricalEvents #ONLINE\n\nBot is now playing ...`);
-}
-
-function sendBotOfflineMessage() {
-    console.log(`Historical Events ended successfully...`);
-    bot.sendMessage(groupId, `#HistoricalEvents #OFFLINE\n\nBot is now off ...`)
-        .then(() => {
-            process.exit(0); 
-        })
-        .catch((error) => {
-            console.error("Error sending shutdown message:", error);
-            process.exit(1); 
-        });
-}
-
-process.on('SIGINT', () => {
-    sendBotOfflineMessage();
-
-
-    async function updateExistingUsersToNewSchema() {
+function updateExistingUsersToNewSchema() {
   try {
-    const result = await UserModel.updateMany(
+    const result = UserModel.updateMany(
       {},
       {
         $rename: {
@@ -1834,5 +1812,25 @@ process.on('SIGINT', () => {
 // Chamada da função para atualizar os documentos
 updateExistingUsersToNewSchema();
 });
+
+function sendBotOnlineMessage() {
+    console.log(`Historical Events started successfully...`);
+    bot.sendMessage(groupId, `#HistoricalEvents #ONLINE\n\nBot is now playing ...`);
+}
+
+function sendBotOfflineMessage() {
+    console.log(`Historical Events ended successfully...`);
+    bot.sendMessage(groupId, `#HistoricalEvents #OFFLINE\n\nBot is now off ...`)
+        .then(() => {
+            process.exit(0); 
+        })
+        .catch((error) => {
+            console.error("Error sending shutdown message:", error);
+            process.exit(1); 
+        });
+}
+
+process.on('SIGINT', () => {
+    sendBotOfflineMessage();
 
 sendBotOnlineMessage();
