@@ -1780,38 +1780,38 @@ const tardJob = new CronJob(
 tardJob.start();
 
 function updateExistingUsersToNewSchema() {
-  try {
-    const result = UserModel.updateMany(
-      {},
-      {
-        $rename: {
-          'firstname': 'first_name',
-          'lastname': 'last_name',
-          'is_dev': 'sudo'
-        },
-        $unset: {
-          'createdAt': '',
-          'updatedAt': ''
-        },
-        $set: {
-          'message_id': null,
-          'hits': 0,
-          'questions': 0,
-          'progress': 0
-        }
-      },
-      { multi: true }
-    );
+    try {
+        const result = UserModel.updateMany(
+            {},
+            {
+                $rename: {
+                    'firstname': 'first_name',
+                    'lastname': 'last_name',
+                    'is_dev': 'sudo'
+                },
+                $unset: {
+                    'createdAt': '',
+                    'updatedAt': ''
+                },
+                $set: {
+                    'message_id': null,
+                    'hits': 0,
+                    'questions': 0,
+                    'progress': 0
+                }
+            },
+            { multi: true }
+        );
 
-    console.log('Documentos atualizados com sucesso:', result);
-  } catch (error) {
-    console.error('Erro ao atualizar os documentos:', error);
-  }
+        console.log('Documentos atualizados com sucesso:', result);
+    } catch (error) {
+        console.error('Erro ao atualizar os documentos:', error);
+    }
 }
 
 // Chamada da função para atualizar os documentos
 updateExistingUsersToNewSchema();
-});
+
 
 function sendBotOnlineMessage() {
     console.log(`Historical Events started successfully...`);
@@ -1822,15 +1822,16 @@ function sendBotOfflineMessage() {
     console.log(`Historical Events ended successfully...`);
     bot.sendMessage(groupId, `#HistoricalEvents #OFFLINE\n\nBot is now off ...`)
         .then(() => {
-            process.exit(0); 
+            process.exit(0);
         })
         .catch((error) => {
             console.error("Error sending shutdown message:", error);
-            process.exit(1); 
+            process.exit(1);
         });
 }
 
 process.on('SIGINT', () => {
     sendBotOfflineMessage();
 
-sendBotOnlineMessage();
+    sendBotOnlineMessage();
+});
