@@ -1812,9 +1812,9 @@ tardJob.start();
 // Chamada da função para atualizar os documentos
 // updateExistingUsersToNewSchema();
 
-function updateExistingChatsToNewSchema() {
+async function updateExistingChatsToNewSchema() {
     try {
-        const result = ChatModel.updateMany(
+        const result = await ChatModel.updateMany(
             {},
             {
                 $rename: {
